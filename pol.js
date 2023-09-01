@@ -20,7 +20,10 @@ class stack {
 
 function push(Stack, tok)
 {
-	if (Stack.Sptr >= Stack.Depth - 1) return -1;
+    if (Stack.Sptr >= Stack.Depth - 1) {
+        ++Stack.Depth;
+        Stack.Stack[Stack.Sptr] = new token(0, "", 0);
+    }
 	if (Stack.Stack[Stack.Sptr] == undefined) Stack.Stack[Stack.Sptr] = new token(0, "", 0);
 	Stack.Stack[Stack.Sptr].type = tok.type;
 	Stack.Stack[Stack.Sptr].op = tok.op;
@@ -91,7 +94,9 @@ function Evaluate()
 	var count_out = 0;
 	expr = document.getElementById("Expr").value;
 	InputStr = String(expr);
-	OutputStr = "";
+    OutputStr = "";
+    Stack.Sptr = 0;
+    OutputStr.Sptr = 0;
 	for (let count = 0; count < InputStr.length; ++count)
 	{
 		if (IsOp(InputStr[count])) {
@@ -189,7 +194,7 @@ function Evaluate()
 		}
 		else if (InputStr[count] === ' ') continue;
 		else {
-			console.log("Îøèáêà â ôîðìóëå, ïîçèöèÿ:")
+            console.log("Ошибка в формуле, позиция:")
 			console.log(count);
 			console.log("\n");
 			break;
@@ -205,7 +210,7 @@ function Evaluate()
 		push(OutStack, tok);
 	}
 	
-	for (int count = 0; count < OutStack.Sptr; ++count)
+	for (var count = 0; count < OutStack.Sptr; ++count)
 	{
 		if (OutStack.Stack[count].type == 1) push(Stack, OutStack.Stack[count]);
 		else if (OutStack.Stack[count].type == 0)
@@ -224,7 +229,7 @@ function Evaluate()
 				break;
 				case '/': Nmb1.nmb /= Nmb2.nmb;
 				break;
-				case '^': Nmb1.nmb = pow(Nmb1.nmb, Nmb2.nmb);
+				case '^': Nmb1.nmb = Math.pow(Nmb1.nmb, Nmb2.nmb);
 				break;
 				default: console.log("Неизвестная операция\n");
 			}
