@@ -52,7 +52,7 @@ function PrintStack(Stack)
 				console.log("\n");
 			}
 		else {
-			console.log("Неизвестный тип токена\n");
+			console.log("ГЌГҐГЁГ§ГўГҐГ±ГІГ­Г»Г© ГІГЁГЇ ГІГ®ГЄГҐГ­Г \n");
 			return -1;
 		}
 	return 0;
@@ -189,7 +189,7 @@ function Evaluate()
 		}
 		else if (InputStr[count] === ' ') continue;
 		else {
-			console.log("Ошибка в формуле, позиция:")
+			console.log("ГЋГёГЁГЎГЄГ  Гў ГґГ®Г°Г¬ГіГ«ГҐ, ГЇГ®Г§ГЁГ¶ГЁГї:")
 			console.log(count);
 			console.log("\n");
 			break;
@@ -204,8 +204,36 @@ function Evaluate()
 		OutputStr += TmpStr.toString()+' ';
 		push(OutStack, tok);
 	}
-
-	document.getElementById("Output").innerHTML = OutputStr.toString();
+	
+	for (int count = 0; count < OutStack.Sptr; ++count)
+	{
+		if (OutStack.Stack[count].type == 1) push(Stack, OutStack.Stack[count]);
+		else if (OutStack.Stack[count].type == 0)
+		{
+			var Nmb1 = new token(0, "", 0);
+			var Nmb2 = new token(0, "", 0);
+			pop(Stack, Nmb2);
+			pop(Stack, Nmb1);
+			switch (OutStack.Stack[count].op)
+			{
+				case '+': Nmb1.nmb += Nmb2.nmb;
+				break;
+				case '-': Nmb1.nmb -= Nmb2.nmb;
+				break;
+				case '*': Nmb1.nmb *= Nmb2.nmb;
+				break;
+				case '/': Nmb1.nmb /= Nmb2.nmb;
+				break;
+				case '^': Nmb1.nmb = pow(Nmb1.nmb, Nmb2.nmb);
+				break;
+				default: console.log("РќРµРёР·РІРµСЃС‚РЅР°СЏ РѕРїРµСЂР°С†РёСЏ\n");
+			}
+			push(Stack, Nmb1);
+		}
+	}
+	var res = new token (0, "", 0);
+	pop(Stack, res)
+	document.getElementById("Output").innerHTML = "Р РµР·СѓР»СЊС‚Р°С‚: "+res.nmb.toString();
 //	alert(expr);
 	return true;
 }
